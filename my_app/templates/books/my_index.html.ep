@@ -1,0 +1,69 @@
+% layout 'default';
+% title 'База данных книг!';
+<h2><%= $message %></h2>
+
+<p>
+  This page was generated from the template "templates/example/welcome.html.ep"
+  and the layout "templates/layouts/default.html.ep",
+  <%= link_to 'click here' => url_for %> to reload the page or
+  <%= link_to 'here' => '/index.html' %> to move forward to a static page.
+  
+</p>
+
+<p>
+<%= $txt %>
+</p>
+
+<h1>База данных книг</h1>
+<div>
+<p></p>
+</div>
+
+<div>
+<p> Укажите параметры книги, чтобы сохранить в базу данных: </p>
+
+<form action='/add' method='POST'>
+ID <input type='text' name='id'><br />
+ISBN <input type='text' name='isbn'><br />
+Автор <input type='text' name='author'><br />
+Имя книги <input type='text' name='book_name'><br />
+Кратное о книге <input type='text' name='book_text'><br />
+<input type='submit' value='Сохранить книгу в базу данных'>
+</form>
+<p><a href='/edit'> Отредактировать карточку</a></p>
+</div>
+
+<table border=1>
+	    <tr>
+	      <th>id</th>
+	      <th>isbn</th>
+        <th>author</th>
+	      <th>book</th>
+	      <th>book_text</th>
+	    </tr>
+% for my $book (@$books) {
+    <tr>
+      <td><%= $book->[0] %></td>
+      <td><%= $book->[1]%></td>
+      <td><%= $book->[2]%></td>
+      <td><%= $book->[3]%></td>
+      <td><%= $book->[4]%></td>
+      <td> 
+            <br>
+             <form action='/edit' method='POST'>
+             <input type='hidden' name='edit_button' value="<%= $book->[0] %>">
+              <input type='submit' name='edit' value='Edit'> 
+            </form>
+            
+            <form action='/edit' method='POST'>
+              <input type='hidden' name='delete_button' value="<%= $book->[0] %>">
+              <input type='submit' name='sub_delete' value='Delete'>
+            </form>
+            </td>    
+    <tr>
+
+% }
+
+
+</table>
+

@@ -1,0 +1,62 @@
+% layout 'default';
+% title 'Редактировать базу данных';
+<h2><%= $message %></h2>
+<%= link_to 'back' => '/' %> to move forward to a static page.
+<%= $pr %>
+
+<table border=1>
+	    <tr>
+	      <th>id</th>
+	      <th>isbn</th>
+        <th>author</th>
+	      <th>book_name</th>
+	      <th>book_text</th>
+	    </tr>
+
+%# while(my @row = $sth->fetchrow_array) {
+    
+    <tr> 
+              <td>".$row[0]."</td>
+              
+              <td>
+              <form action='/cgi-bin/edit.pl' method='POST'>
+              <textarea name='cell'>".$row[1]."</textarea>
+              <input type='hidden' name='name_col' value='isbn'>
+              <input type='hidden' name='id_book' value=".$row[0].">
+              <input type='submit' name='if_save_press' value='Save'>
+              </form>
+              </td>
+              
+              <td>
+              <form action='/cgi-bin/edit.pl' method='POST'>
+              <textarea name='cell'>".$row[2]."</textarea>
+              <input type='hidden' name='name_col' value='author'>
+              <input type='hidden' name='id_book' value=".$row[0].">
+              <input type='submit' name='if_save_press' value='Save'>
+              </form>
+              </td>
+              
+              <td>
+              <form action='/cgi-bin/edit.pl' method='POST'>
+              <textarea name='cell'>".$row[3]."</textarea>
+              <input type='hidden' name='name_col' value='book_name'>
+              <input type='hidden' name='id_book' value=".$row[0].">
+              <input type='submit' name='if_save_press' value='Save'>
+              </form>
+              </td>
+              
+              <td>
+              <form action='/cgi-bin/edit.pl' method='POST'>
+              <textarea name='cell'>".$row[4]."</textarea>
+              <input type='hidden' name='name_col' value='book_text'>
+              <input type='hidden' name='id_book' value=".$row[0].">
+              <input type='submit' name='if_save_press' value='Save'>
+              </form>
+              </td>            
+    </tr>
+
+%#}
+
+</table>
+<br>
+<a href='/'> Назад на главную </a>
