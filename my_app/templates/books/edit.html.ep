@@ -1,8 +1,12 @@
 % layout 'default';
 % title 'Редактировать базу данных';
 <h2><%= $message %></h2>
-<%= link_to 'back' => '/' %> to move forward to a static page.
-<%= $pr %>
+<h2><%= $c0 %></h2>
+
+<h2><%= $message2 %></h2>
+
+
+
 
 <table border=1>
 	    <tr>
@@ -13,50 +17,38 @@
 	      <th>book_text</th>
 	    </tr>
 
-%# while(my @row = $sth->fetchrow_array) {
-    
-    <tr> 
-              <td>".$row[0]."</td>
+% for my $book (@$books) { 
+    <form action='/edit' method='POST'>
+      <input type='hidden' name='id_book' value="<%= $book->[0]%>">
+        <tr> 
+              <td><%= $book->[0] %>
+              </td>
               
               <td>
-              <form action='/cgi-bin/edit.pl' method='POST'>
-              <textarea name='cell'>".$row[1]."</textarea>
+              <textarea name='isbn_ta'><%= $book->[1] %></textarea>
               <input type='hidden' name='name_col' value='isbn'>
-              <input type='hidden' name='id_book' value=".$row[0].">
-              <input type='submit' name='if_save_press' value='Save'>
-              </form>
               </td>
               
               <td>
-              <form action='/cgi-bin/edit.pl' method='POST'>
-              <textarea name='cell'>".$row[2]."</textarea>
+              <textarea name='author_ta'><%= $book->[2] %></textarea>
               <input type='hidden' name='name_col' value='author'>
-              <input type='hidden' name='id_book' value=".$row[0].">
-              <input type='submit' name='if_save_press' value='Save'>
-              </form>
               </td>
               
               <td>
-              <form action='/cgi-bin/edit.pl' method='POST'>
-              <textarea name='cell'>".$row[3]."</textarea>
+              <textarea name='book_name_ta'><%= $book->[3] %></textarea>
               <input type='hidden' name='name_col' value='book_name'>
-              <input type='hidden' name='id_book' value=".$row[0].">
-              <input type='submit' name='if_save_press' value='Save'>
-              </form>
               </td>
               
               <td>
-              <form action='/cgi-bin/edit.pl' method='POST'>
-              <textarea name='cell'>".$row[4]."</textarea>
+              <textarea name='book_text_ta'><%= $book->[4] %></textarea>
               <input type='hidden' name='name_col' value='book_text'>
-              <input type='hidden' name='id_book' value=".$row[0].">
-              <input type='submit' name='if_save_press' value='Save'>
-              </form>
-              </td>            
-    </tr>
-
-%#}
+              </td>           
+        </tr>
+      <input type='submit' name='if_save_press' value='Save'>
+    </form>  
+% }
 
 </table>
 <br>
-<a href='/'> Назад на главную </a>
+
+<%= link_to 'Назад' => '/' %> (вернуться на главную страницу).
