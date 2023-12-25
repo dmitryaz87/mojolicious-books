@@ -31,8 +31,8 @@ sub startup ($self) {
   $r->get('/')->to('Books#my_index');
   
   $r->post('/edit')->to('Books#edit');
-  
-  $r->post('/add');
+  $r->post('/delete')->to('Books#delete');
+  $r->post('/add')->to('Books#add');
 }
 
 1;

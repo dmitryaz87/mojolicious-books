@@ -1,26 +1,24 @@
 % layout 'default';
 % title 'Редактировать базу данных';
 <h2><%= $message %></h2>
-<h2><%= $c0 %></h2>
-
-<h2><%= $message2 %></h2>
+<h3><%= $time %></h3>
 
 
 
 
 <table border=1>
-	    <tr>
-	      <th>id</th>
-	      <th>isbn</th>
-        <th>author</th>
-	      <th>book_name</th>
-	      <th>book_text</th>
-	    </tr>
+	      <tr>
+	        <th>id</th>
+	        <th>isbn</th>
+          <th>author</th>
+	        <th>book_name</th>
+	        <th>book_text</th>
+	      </tr>
 
 % for my $book (@$books) { 
-    <form action='/edit' method='POST'>
-      <input type='hidden' name='id_book' value="<%= $book->[0]%>">
-        <tr> 
+      <form id ='my_form'action='/edit' method='POST'>
+        <tr>
+          <input type='hidden' name='id_book' value="<%= $book->[0]%>"> 
               <td><%= $book->[0] %>
               </td>
               
@@ -43,12 +41,15 @@
               <textarea name='book_text_ta'><%= $book->[4] %></textarea>
               <input type='hidden' name='name_col' value='book_text'>
               </td>           
+          
         </tr>
-      <input type='submit' name='if_save_press' value='Save'>
-    </form>  
+      </form>  
 % }
 
 </table>
 <br>
-
+<div > 
+Нажмите, чтобы сохранить изменения <input form='my_form' type='submit' name='if_save_press' value='Save'>
+</div> 
+<br>
 <%= link_to 'Назад' => '/' %> (вернуться на главную страницу).

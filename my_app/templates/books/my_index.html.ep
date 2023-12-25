@@ -1,38 +1,35 @@
 % layout 'default';
 % title 'База данных книг!';
 <h2><%= $message %></h2>
+%if (flash 'message_add') { 
+<h3> <%=  flash 'message_add' %> </h3>
+%}
 
-<p>
-  This page was generated from the template "templates/example/welcome.html.ep"
-  and the layout "templates/layouts/default.html.ep",
-  <%= link_to 'click here' => url_for %> to reload the page or
-  <%= link_to 'here' => '/index.html' %> to move forward to a static page.
+%if (flash 'message_del') { 
+<h3> <%=  flash 'message_del' %> </h3>
+%}
+
+%#<p>
+  %#This page was generated from the template "templates/example/welcome.html.ep"
+  %#and the layout "templates/layouts/default.html.ep",
+  %#<%= link_to 'click here' => url_for %> to reload the page or
+  %#<%= link_to 'here' => '/index.html' %> to move forward to a static page.
   
-</p>
-
-<p>
-<%= $txt %>
-</p>
-
-<h1>База данных книг</h1>
-<div>
-<p></p>
-</div>
-
+%#</p>
 <div>
 <p> Укажите параметры книги, чтобы сохранить в базу данных: </p>
 
 <form action='/add' method='POST'>
-ID <input type='text' name='id'><br />
-ISBN <input type='text' name='isbn'><br />
-Автор <input type='text' name='author'><br />
-Имя книги <input type='text' name='book_name'><br />
-Кратное о книге <input type='text' name='book_text'><br />
-<input type='submit' value='Сохранить книгу в базу данных'>
+    ID <input type='text' name='id'><br />
+    ISBN <input type='text' name='isbn'><br />
+    Автор <input type='text' name='author'><br />
+    Имя книги <input type='text' name='book_name'><br />
+    Кратное о книге <input type='text' name='book_text'><br />
+  <input type='submit' name='books_action1' value='Сохранить книгу'>
 </form>
-<p><a href='/edit'> Отредактировать карточку</a></p>
 </div>
 
+<br>
 <table border=1>
 	    <tr>
 	      <th>id</th>
@@ -42,6 +39,7 @@ ISBN <input type='text' name='isbn'><br />
 	      <th>book_text</th>
 	    </tr>
 % for my $book (@$books) {
+
     <tr>
       <td><%= $book->[0] %></td>
       <td><%= $book->[1]%></td>
@@ -55,14 +53,16 @@ ISBN <input type='text' name='isbn'><br />
               <input type='submit' name='edit' value='Edit'> 
             </form>
             
-            <form action='/edit' method='POST'>
+            <form action='/delete' method='POST'>
               <input type='hidden' name='delete_button' value="<%= $book->[0] %>">
               <input type='submit' name='sub_delete' value='Delete'>
             </form>
             </td>    
     <tr>
+    </form>
 
 % }
+
 
 
 </table>
