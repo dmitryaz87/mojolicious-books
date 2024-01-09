@@ -5,13 +5,9 @@ use DBI;
 use utf8;
 use Data::Dumper;
 
-#my $dsn = "DBI:mysql:books_db:localhost;charset=utf8";
-#my $mysqluser = "books_user";
-#my $pass = "WWW123";
-  
+# config file for work with database
 my $config_file = '/var/mojolicious/my_app/connect.cfg';
-# my $dbh  = DBI->connect($dsn,$mysqluser,$pass);
-# my $dbh = DBI->connect("dbi:mysql:mysql_read_default_file=$config_file;mysql_read_default_group=$group",undef,undef,{});
+
 my $dbh = DBI->connect("dbi:mysql:mysql_read_default_file=$config_file;mysql_read_default_group=general",undef,undef,{});
 $dbh->{'mysql_enable_utf8'} = 1;
 
