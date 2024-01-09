@@ -5,17 +5,20 @@ use DBI;
 use utf8;
 use Data::Dumper;
 
-my $dsn = "DBI:mysql:books_db:localhost;charset=utf8";
-my $mysqluser = "books_user";
-my $pass = "WWW123";
+#my $dsn = "DBI:mysql:books_db:localhost;charset=utf8";
+#my $mysqluser = "books_user";
+#my $pass = "WWW123";
   
-my $dbh  = DBI->connect($dsn,$mysqluser,$pass);
+my $config_file = '/var/mojolicious/my_app/connect.cfg';
+# my $dbh  = DBI->connect($dsn,$mysqluser,$pass);
+# my $dbh = DBI->connect("dbi:mysql:mysql_read_default_file=$config_file;mysql_read_default_group=$group",undef,undef,{});
+my $dbh = DBI->connect("dbi:mysql:mysql_read_default_file=$config_file;mysql_read_default_group=general",undef,undef,{});
 $dbh->{'mysql_enable_utf8'} = 1;
 
 
 # This action will render a template
 sub my_index ($self) {
-  #$self->{_dbh} = $dbh;
+  # $self->{_dbh} = $dbh;
   my $sql_1 = "select * from books_table";
   my $sth = $dbh->prepare($sql_1);
   $sth->execute();
@@ -43,7 +46,7 @@ sub edit ($self) {
 
   $self->stash({books => \@books});
 
-  #пишем логику по редактированию
+  # пишем логику по редактированию
   my $time = localtime;
   my $id_book = $self->param('if_save_press');
   if ($id_book eq 'Save') {
@@ -58,7 +61,7 @@ sub edit ($self) {
 	  my $sth = $dbh->prepare($sql_2);
     $sth->execute($c1, $c2, $c3, $c4, $id);
     
-    #заново делаем запрос и рисуем таблицу, так как мы обновили данныеы
+    # заново делаем запрос и рисуем таблицу, так как мы обновили данныеы
     my $sql_1 = "select * from books_table where id = ? ";
     $sth = $dbh->prepare($sql_1);
     $sth->execute($id);
@@ -69,14 +72,14 @@ sub edit ($self) {
       };
     $self->stash({books => \@books});
     $self->render(message => "Книга id = $id обновлена!", time => $time, txt => 'This is my text on page Edit!', c0 =>$id);
-    #отрисуем и выйдем
+    # отрисуем и выйдем
     last;
   }
   $self->render(message => 'Отредактируйте книгу', message2 => '', txt => 'This is my text on page Edit!', time => $time, c0 =>$id);
 
 }
 
-#добавляем книгу
+# добавляем книгу
 sub add ($self) {
   my $books_action1 = $self->param('books_action1');
   
@@ -95,7 +98,7 @@ sub add ($self) {
   $self->redirect_to('/');
 }
 
-#удаляем книгу
+# удаляем книгу
 sub delete ($self) {
   my $sub_delete = $self->param('sub_delete');
 
