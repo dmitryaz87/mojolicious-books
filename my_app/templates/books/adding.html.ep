@@ -1,0 +1,32 @@
+% layout 'default';
+% title 'Добавить книгу в базу';
+
+<h2><%= $message %></h2>
+<div>
+  <%= link_to 'Назад' => '/' %> (вернуться на главную страницу).
+</div>
+
+%if (flash 'message_add') { 
+<h3> <%=  flash 'message_add' %> </h3>
+%}
+
+
+%#<p>
+  %#This page was generated from the template "templates/example/welcome.html.ep"
+  %#and the layout "templates/layouts/default.html.ep",
+  %#<%= link_to 'click here' => url_for %> to reload the page or
+  %#<%= link_to 'here' => '/index.html' %> to move forward to a static page.
+  
+%#</p>
+<div>
+<p> Укажите параметры книги, чтобы сохранить в базу данных: </p>
+
+<form action='/add' method='POST'>
+    ID <input type='text' name='id'><br />
+    ISBN <input type='text' name='isbn'><br />
+    Автор <input type='text' name='author'><br />
+    Имя книги <input type='text' name='book_name'><br />
+    Кратное о книге <input type='text' name='book_text'><br />
+  <input type='submit' name='books_action1' value='Сохранить книгу'>
+</form>
+</div>

@@ -13,10 +13,10 @@ $dbh->{'mysql_enable_utf8'} = 1;
 
 
 # This action will render a template
-sub my_index ($self) {
+sub index ($self) {
   # $self->{_dbh} = $dbh;
-  my $sql_1 = "select * from books_table";
-  my $sth = $dbh->prepare($sql_1);
+  my $sql_read_all_db = "select * from books_table";
+  my $sth = $dbh->prepare($sql_read_all_db);
   $sth->execute();
  
   my @books = ();
@@ -26,9 +26,10 @@ sub my_index ($self) {
   
   # Render template "example/welcome.html.ep" with message
   $self->stash({books => \@books});
-  $self->render(message => 'База данных книг', txt => 'This is my text!');
+  $self->render(message => 'База данных книг');
 }
 
+# редактируем книгу
 sub edit ($self) {
   my $id = $self->param('edit_button');
   my $sql_1 = "select * from books_table where id = ? ";
@@ -57,7 +58,7 @@ sub edit ($self) {
 	  my $sth = $dbh->prepare($sql_2);
     $sth->execute($c1, $c2, $c3, $c4, $id);
     
-    # заново делаем запрос и рисуем таблицу, так как мы обновили данныеы
+    # заново делаем запрос и рисуем таблицу, так как мы обновили данные
     my $sql_1 = "select * from books_table where id = ? ";
     $sth = $dbh->prepare($sql_1);
     $sth->execute($id);
@@ -67,15 +68,34 @@ sub edit ($self) {
       push @books, \@row;
       };
     $self->stash({books => \@books});
-    $self->render(message => "Книга id = $id обновлена!", time => $time, txt => 'This is my text on page Edit!', c0 =>$id);
+    $self->render(message => "Книга id = $id обновлена!", time => $time, c0 =>$id);
     # отрисуем и выйдем
     last;
   }
-  $self->render(message => 'Отредактируйте книгу', message2 => '', txt => 'This is my text on page Edit!', time => $time, c0 =>$id);
+  $self->render(message => 'Отредактируйте книгу', time => $time, c0 =>$id);
 
 }
 
-# добавляем книгу
+# добавляем книгу на отдельной странице, для этого sub adding
+sub adding ($self) {
+  $self->render(message => 'Добавляем новую книгу');
+}
+
+# удаляем книгу
+sub delete ($self) {
+  my $sub_delete = $self->param('sub_delete');
+
+  if ($sub_delete eq 'Удалить' ) {
+      my $delete_button = $self->param('delete_button');
+      my $sth = $dbh->prepare("DELETE FROM books_table WHERE id=?;");
+      $sth->execute($delete_button);
+  }
+  my $id = $self->param('delete_button');
+  $self->flash(message_add => "Книга $id удалена");
+  $self->redirect_to('/');
+}
+
+# sub add для обработки post-запроса
 sub add ($self) {
   my $books_action1 = $self->param('books_action1');
   
@@ -88,24 +108,10 @@ sub add ($self) {
     my $book_text = $self->param("book_text");
     my $sth = $dbh->prepare("INSERT INTO books_table VALUES(?,?,?,?,?);");
     $sth->execute($id, $isbn, $book_name,$author, $book_text);
- }
-  my $id = $self->param("id"); 
-  $self->flash(message_add => "Новая книга $id успешно добавлена");
-  $self->redirect_to('/');
-}
-
-# удаляем книгу
-sub delete ($self) {
-  my $sub_delete = $self->param('sub_delete');
-
-  if ($sub_delete eq 'Delete' ) {
-      my $delete_button = $self->param('delete_button');
-      my $sth = $dbh->prepare("DELETE FROM books_table WHERE id=?;");
-      $sth->execute($delete_button);
   }
-  my $id = $self->param('delete_button');
-  $self->flash(message_add => "Книга $id удалена");
-  $self->redirect_to('/');
+  my $id = $self->param("id");
+  $self->flash(message_add => "Новая книга $id успешно добавлена");
+  $self->redirect_to('/adding');
 }
 
 1;

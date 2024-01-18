@@ -8,9 +8,9 @@ use Data::Dumper;
 
 
 
-#my $dbh  = DBI->connect($dsn,$mysqluser,$pass); #or
-#die("Ошибка подключения к базе данных: $DBI::errstr\n");
-#print "Connection database OK <br>" if $dbh;
+# my $dbh  = DBI->connect($dsn,$mysqluser,$pass); #or
+# die("Ошибка подключения к базе данных: $DBI::errstr\n");
+# print "Connection database OK <br>" if $dbh;
 
 # This method will run once at server start
 sub startup ($self) {
@@ -26,10 +26,10 @@ sub startup ($self) {
   
   # Normal route to controller
   #$r->get('/')->to('Example#welcome');
-  
-  #$r->get('/' => { books => \@books })->to('Books#my_index');
-  $r->get('/')->to('Books#my_index');
-  
+ 
+  $r->get('/')->to('Books#index');
+  $r->get('/adding')->to('Books#adding');
+
   $r->post('/edit')->to('Books#edit');
   $r->post('/delete')->to('Books#delete');
   $r->post('/add')->to('Books#add');

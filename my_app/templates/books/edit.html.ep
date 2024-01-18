@@ -1,11 +1,12 @@
 % layout 'default';
 % title 'Редактировать базу данных';
+
 <h2><%= $message %></h2>
-<h3><%= $time %></h3>
-
-
-
-
+<div>
+  <%= link_to 'Назад' => '/' %> (вернуться на главную страницу).
+</div>
+%#<h3><%= $time %></h3>
+<br>
 <table border=1>
 	      <tr>
 	        <th>id</th>
@@ -51,5 +52,3 @@
 <div > 
 Нажмите, чтобы сохранить изменения <input form='my_form' type='submit' name='if_save_press' value='Save'>
 </div> 
-<br>
-<%= link_to 'Назад' => '/' %> (вернуться на главную страницу).

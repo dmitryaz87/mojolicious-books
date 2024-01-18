@@ -17,16 +17,9 @@
   
 %#</p>
 <div>
-<p> Укажите параметры книги, чтобы сохранить в базу данных: </p>
 
-<form action='/add' method='POST'>
-    ID <input type='text' name='id'><br />
-    ISBN <input type='text' name='isbn'><br />
-    Автор <input type='text' name='author'><br />
-    Имя книги <input type='text' name='book_name'><br />
-    Кратное о книге <input type='text' name='book_text'><br />
-  <input type='submit' name='books_action1' value='Сохранить книгу'>
-</form>
+<div>
+  Кликните <%= link_to 'Добавить' => '/adding' %> для создания новой книги
 </div>
 
 <br>
@@ -50,12 +43,13 @@
             <br>
              <form action='/edit' method='POST'>
              <input type='hidden' name='edit_button' value="<%= $book->[0] %>">
-              <input type='submit' name='edit' value='Edit'> 
+              <input type='submit' name='edit' value='Редактировать'> 
             </form>
             
             <form action='/delete' method='POST'>
               <input type='hidden' name='delete_button' value="<%= $book->[0] %>">
-              <input type='submit' name='sub_delete' value='Delete'>
+              <br>
+              <input type='submit' name='sub_delete' value='Удалить'>
             </form>
             </td>    
     <tr>
@@ -66,4 +60,7 @@
 
 
 </table>
+
+
+
 
