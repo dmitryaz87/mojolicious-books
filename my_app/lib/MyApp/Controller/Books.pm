@@ -32,8 +32,8 @@ sub index ($self) {
 # редактируем книгу
 sub edit ($self) {
   my $id = $self->param('edit_button');
-  my $sql_1 = "select * from books_table where id = ? ";
-  my $sth = $dbh->prepare($sql_1);
+  my $sql_req_where_id = "select * from books_table where id = ? ";
+  my $sth = $dbh->prepare($sql_req_where_id);
   $sth->execute($id);
 
   my @books = ();
@@ -49,18 +49,18 @@ sub edit ($self) {
   if ($id_book eq 'Save') {
     
     my $id = $self->param('id_book');
-    my $c1 = $self->param('isbn_ta');
-    my $c2 = $self->param('author_ta');
-    my $c3 = $self->param('book_name_ta');
-    my $c4 = $self->param('book_text_ta');
+    my $isbn = $self->param('isbn_ta'); # "_ta" из textarea
+    my $author = $self->param('author_ta');
+    my $book_name = $self->param('book_name_ta');
+    my $book_text = $self->param('book_text_ta');
     
-    my $sql_2 = "UPDATE books_table SET isbn = ?, author = ?, book_name = ?, book_text = ?  WHERE id = ?";
-	  my $sth = $dbh->prepare($sql_2);
-    $sth->execute($c1, $c2, $c3, $c4, $id);
+    my $sql_update = "UPDATE books_table SET isbn = ?, author = ?, book_name = ?, book_text = ?  WHERE id = ?";
+	  my $sth = $dbh->prepare($sql_update);
+    $sth->execute($isbn, $author, $book_name, $book_text, $id);
     
     # заново делаем запрос и рисуем таблицу, так как мы обновили данные
-    my $sql_1 = "select * from books_table where id = ? ";
-    $sth = $dbh->prepare($sql_1);
+    #my $sql_1 = "select * from books_table where id = ? ";
+    $sth = $dbh->prepare($sql_req_where_id);
     $sth->execute($id);
 
     my @books = ();
@@ -68,11 +68,11 @@ sub edit ($self) {
       push @books, \@row;
       };
     $self->stash({books => \@books});
-    $self->render(message => "Книга id = $id обновлена!", time => $time, c0 =>$id);
+    $self->render(message => "Книга id = $id обновлена!", time => $time, id =>$id);
     # отрисуем и выйдем
     last;
   }
-  $self->render(message => 'Отредактируйте книгу', time => $time, c0 =>$id);
+  $self->render(message => 'Отредактируйте книгу', time => $time, id =>$id);
 
 }
 
@@ -102,15 +102,20 @@ sub add ($self) {
   if($books_action1 eq 'Сохранить книгу') {
     #print "<b>$book</b>";
     my $id = $self->param("id");
-    my $isbn = $self->param("isbn");
-    my $author = $self->param("author");
-    my $book_name = $self->param("book_name");
-    my $book_text = $self->param("book_text");
-    my $sth = $dbh->prepare("INSERT INTO books_table VALUES(?,?,?,?,?);");
-    $sth->execute($id, $isbn, $book_name,$author, $book_text);
+    if ($id =~ /^\d+$/) {
+      my $isbn = $self->param("isbn");
+      my $author = $self->param("author");
+      my $book_name = $self->param("book_name");
+      my $book_text = $self->param("book_text");
+      my $sth = $dbh->prepare("INSERT INTO books_table VALUES(?,?,?,?,?);");
+      $sth->execute($id, $isbn, $book_name,$author, $book_text);
+      #my $id = $self->param("id");
+      $self->flash(message_add => "Новая книга $id успешно добавлена");
+    }
+    else {
+      $self->flash(message_add => "Ошибка при добавлении книги. Укажите корректный id в виде целого числа!");
+    }
   }
-  my $id = $self->param("id");
-  $self->flash(message_add => "Новая книга $id успешно добавлена");
   $self->redirect_to('/adding');
 }
 
